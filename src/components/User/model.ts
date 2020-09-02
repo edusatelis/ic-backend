@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import * as connection from '../../config/connections/database';
 
 /**
@@ -77,4 +77,4 @@ const SystemUser:Schema = new Schema({
 });
 
 
-export default connection.db.model<IUserModel>('users',SystemUser);
+export default mongoose.model<IUserModel>('users',SystemUser);

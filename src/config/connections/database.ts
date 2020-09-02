@@ -17,13 +17,13 @@ const connectOptions: IConnectOptions = {
 
 const MONGO_URI: string = `${process.env.MONGODB_URI}${process.env.MONGODB_DB_MAIN}`;
 
-export const db: mongoose.Connection = mongoose.createConnection(MONGO_URI, connectOptions);
+export const db: any= mongoose.connect(MONGO_URI, connectOptions);
 // handlers
 db.on('connecting', () => {
     console.log('\x1b[32m', 'MongoDB :: connecting');
 });
 
-db.on('error', (error) => {
+db.on('error', (error:any) => {
     console.log('\x1b[31m', `MongoDB :: connection ${error}`);
     mongoose.disconnect();
 });
