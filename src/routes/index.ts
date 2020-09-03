@@ -38,15 +38,8 @@ export function init(app: express.Application): void {
     //             '<p>Then, restart your application</p>');
     //     });
     // }
-
-    /** 
-     * @description No results returned mean the object is not found
-     * @constructs
-     */
-    app.use('/',(req, res, next) => {
-        res.send("API: 0.0.1"); 
-    });
-
+    
+    
     
     /**
      * @constructs all routes

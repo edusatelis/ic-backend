@@ -1,5 +1,8 @@
+import * as bcryptjs from 'bcryptjs';
+// import * as connections from '../../config/connections/database';
+import * as crypto from 'crypto';
 import mongoose, { Document, Schema } from 'mongoose';
-import * as connection from '../../config/connections/database';
+// import { NextFunction } from 'express';
 
 /**
  * @export
@@ -11,70 +14,56 @@ export interface IUserModel extends Document {
     cpf: string;
     email: string;
     password: string;
-    activeEmail: Object;
-    comparePassword: (password: string) => Promise<boolean>;
+    comparePassword: (password: string) => Promise < boolean > ;
 }
 
+export type AuthToken = {
+    accessToken: string,
+    kind: string
+};
 
-// const FileSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema({
+    name: String,
+    cpf: String,
+    email: {
+        type: String,
+        unique: true,
+        trim: true
+    },
+    password: String
+}, {
+    collection: 'users',
+    versionKey: false
+}).pre('save', async function (next: any): Promise < void > {
+    const user: any = this; // tslint:disable-line
 
-//     name: { type: String, require: true },
-//     type: { type: String, require: true },
-//     uploadDate: { type: Date, require: true }
-// });
+    if (!user.isModified('password')) {
+        return next();
+    }
 
-// const authEmailSchema: Schema = new Schema({
+    try {
+        const salt: string = await bcryptjs.genSalt(10);
 
-//     verified: { type: Boolean, require: false },
-//     linkVerification: { type: String, require: true },
-//     authToken: { type: String, require: true }
-// });
+        const hash: string = await bcryptjs.hash(user.password, salt);
 
-// const docSystemUserSchema: Schema = new Schema({
-
-//     name: { type: String, require: true, uppercase: true, enum: ['RG', 'CPF', 'FOTO3X4', 'CADASTRO MUNICIPAL', 'COMPROVANTE DE MATRÍCULA', 'COMPROVANTE DE RESIDÊNCIA'] },
-//     value: { type: String, require: true },
-//     expeditionDate: { type: String, require: false }, // data expedição transporte rg
-//     state: { type: String, require: false },
-//     file: { type: FileSchema, require: false }
-
-// });
-
-// const userPermission: Schema = new Schema({
-//     name: { type: String, require: true },
-//     acess: { type: Boolean, require: true },
-//     userType: { type: Number, require: true },
-//     register: { type: Boolean, require: true },
-//     edit: { type: Boolean, require: true },
-//     delet: { type: Boolean, require: true },
-//     view: { type: Boolean, require: true }
-// })
-// const addressSystemUserSchema: Schema = new Schema({
-
-//     name: { type: String, require: true, enum: ['RESIDENCIAL', 'COMERCIAL'] },
-//     street: { type: String, require: false },
-//     number: { type: String, require: false },
-//     complement: { type: String, require: false },
-//     neighborhood: { type: String, require: false },
-//     city: { type: String, require: false },
-//     zip_code: { type: String, require: false },
-//     state: { type: String, require: false }
-// })
-
-// const phoneSystemUserSchema: Schema = new Schema({
-
-//     name: { type: String, require: true, enum: ['COMERCIAL', 'RESIDENCIAL', 'CELULAR', 'FIXO-RECADO', 'CELULAR-RECADO'] },
-//     number_phone: { type: String, require: false }
-// })
-
-const SystemUser:Schema = new Schema({
-    name: {type: String, required: true },
-    cpf: {type: String, required: true},
-    email: {type: String, required: true},
-    password: {type: String},
-    registrationDate: {type: Date, default: Date.now},
-    active: {type: Boolean, required: false, default: true}
+        user.password = hash;
+        next();
+    } catch (error) {
+        return next(error);
+    }
 });
 
+/**
+ * Method for comparing passwords
+ */
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise < boolean > {
+    try {
+        const match: boolean = await bcryptjs.compare(candidatePassword, this.password);
 
-export default mongoose.model<IUserModel>('users',SystemUser);
+        return match;
+    } catch (error) {
+        return error;
+    }
+};
+
+export default mongoose.model < IUserModel > ('users', UserSchema);

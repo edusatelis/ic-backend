@@ -23,10 +23,10 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
     
     try {
         // Verifica se o usuario está validando de acordo com o modelo
-        const user: IUserModel = await AuthService.createUser(req.body);
-
+        const user:any = await AuthService.createUser(req.body);
         // Retorno caso a função seja sucedida.
-        res.status(200).json('Cadatrado com Sucesso!');
+        if(user)
+            res.status(200).json('Cadatrado com Sucesso!');
 
     } catch (error) { // Retorno caso falhe a função.
 
@@ -57,7 +57,8 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
         });
 
         // Corpo devolvido caso a requisição sejá bem sucedida.
-        res.status(200).json({ logged: true, message: 'Login realizado com sucesso',  token});
+        if(user)
+             res.status(200).json({ logged: true, message: 'Login realizado com sucesso',  token});
 
 
     } catch (error) { // Retorno caso falhe a função.

@@ -1,3 +1,4 @@
+import bcryptjs from 'bcryptjs';
 import UserModel, { IUserModel } from "../User/model";
 import { IAuthService } from "./interface";
 let validarcpf = require('validar-cpf');
@@ -11,13 +12,17 @@ const AuthService: IAuthService = {
      */
     async createUser(body: IUserModel): Promise<IUserModel> {
         try {
-
+            let passHash: any = bcryptjs.hashSync(body.password);
             //Alimenta um objeto de novo usuario
             const user: IUserModel = new UserModel({
                 name: body.name,
                 email: body.email,
-                password: body.password,
-                documents: [{ name: "CPF", value: body.cpf }]
+                password: passHash ,
+                cpf: body.cpf
+                // documents: [{ 
+                //     name: "CPF", 
+                //     value: body.cpf 
+                // }]
             });
 
             //Pesquisa o email na base
@@ -28,12 +33,7 @@ const AuthService: IAuthService = {
             }
 
             //Pesquisa o cpf na base
-            const cpf: any = await UserModel.findOne({
-                documents: [{
-                    name: "CPF",
-                    value: body.cpf
-                }],
-            });
+            const cpf: any = await UserModel.findOne({ cpf: body.cpf});
             //Caso ja esteja cadastrado!
             if (cpf) {
                 throw new Error('CPF ja existe!');
