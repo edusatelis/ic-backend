@@ -48,14 +48,14 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
 export async function login(req: Request, res: Response, next: NextFunction): Promise < void > {
 
     try {
+       
         // Validando os campos do corpo da requisição. 
-        const user: IUserModel = await AuthService.login(req.body);
+        const user: IUserModel = await AuthService.getUser(req.body);
 
-        // Gerando token valido por 4 horas.
-        const token: string = jwt.sign({ email: user.email }, app.get('secret'), {
-            expiresIn: '4h'
+        // Gerando token valido por 1 hora.
+        const token: string = jwt.sign({ email: user.email }, `${process.env.SECRET}`, {
+            expiresIn: '60m'
         });
-
         // Corpo devolvido caso a requisição sejá bem sucedida.
         if(user)
              res.status(200).json({ logged: true, message: 'Login realizado com sucesso',  token});

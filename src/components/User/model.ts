@@ -1,8 +1,6 @@
-import * as bcryptjs from 'bcryptjs';
-// import * as connections from '../../config/connections/database';
-import * as crypto from 'crypto';
+import bcryptjs from 'bcryptjs';
 import mongoose, { Document, Schema } from 'mongoose';
-// import { NextFunction } from 'express';
+
 
 /**
  * @export
@@ -24,12 +22,8 @@ export type AuthToken = {
 
 const UserSchema: Schema = new Schema({
     name: String,
-    cpf: String,
-    email: {
-        type: String,
-        unique: true,
-        trim: true
-    },
+    cpf: {type: String, unique: true, trim: true},
+    email: {type: String, unique: true, trim: true},
     password: String
 }, {
     collection: 'users',
@@ -42,9 +36,7 @@ const UserSchema: Schema = new Schema({
     }
 
     try {
-        const salt: string = await bcryptjs.genSalt(10);
-
-        const hash: string = await bcryptjs.hash(user.password, salt);
+        const hash: string = await bcryptjs.hash(user.password, 10);
 
         user.password = hash;
         next();
@@ -57,9 +49,8 @@ const UserSchema: Schema = new Schema({
  * Method for comparing passwords
  */
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise < boolean > {
-    try {
+    try {        
         const match: boolean = await bcryptjs.compare(candidatePassword, this.password);
-
         return match;
     } catch (error) {
         return error;

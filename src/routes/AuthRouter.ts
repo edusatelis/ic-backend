@@ -4,6 +4,7 @@ const AuthRouter: express.Router = express.Router();
 
 
 AuthRouter.post('/signup', AuthService.signup);
+AuthRouter.post('/login', AuthService.login);
 
 
 

@@ -12,17 +12,12 @@ const AuthService: IAuthService = {
      */
     async createUser(body: IUserModel): Promise<IUserModel> {
         try {
-            let passHash: any = bcryptjs.hashSync(body.password);
             //Alimenta um objeto de novo usuario
             const user: IUserModel = new UserModel({
                 name: body.name,
                 email: body.email,
-                password: passHash ,
+                password: body.password ,
                 cpf: body.cpf
-                // documents: [{ 
-                //     name: "CPF", 
-                //     value: body.cpf 
-                // }]
             });
 
             //Pesquisa o email na base
@@ -63,29 +58,27 @@ const AuthService: IAuthService = {
         }
     },
 
-    async login(body: IUserModel): Promise<IUserModel> {
+    async getUser(body: IUserModel): Promise<IUserModel> {
 
         try {
             // Busca o usuário a partir do e-mail
             const user: any = await UserModel.findOne({
                 email: body.email
             });
-
             // Caso o e-mail não esteja casastrado 
             if (!user) {
-                throw new Error('E-mail/Senha inválido(s)');
+                throw new Error('E-mail inválido');
             }
 
             // Compara a senha que foi passada no corpo da requisição com a que está no banco
-            const isMatched: boolean = await user.comparePassword(body.password);
-
+            const isMatched: boolean = user && await user.comparePassword(body.password);
             // Se as senhas forem iguais retorna o usuario
             if (isMatched) {
                 return user;
             }
 
             // Caso a senha esteja errada
-            throw new Error('E-mail/Senha inválido(s)');
+            throw new Error('Senha inválida');
         } catch (error) {
             throw new Error(error);
         }
