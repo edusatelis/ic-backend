@@ -1,24 +1,25 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import * as connection from '../../config/connections/database';
+
 
 /**
  * @export
  * @interface IUserModel
  * @extends {Document}
  */
-export interface ICategoriaModel extends Document {
-    name: string;
+export interface IIncidentReportModel extends Document {
+    path: string;
+    date: Date;
+    location: string;
+    category: string;
     
 }
 
-const SystemUser:Schema = new Schema({
-    name: {type: String, required: true },
-    cpf: {type: String, required: true},
-    email: {type: String, required: true},
-    password: {type: String},
-    registrationDate: {type: Date, default: Date.now},
-    active: {type: Boolean, required: false, default: true}
+const IncidentReportModel:Schema = new Schema({
+    path: {type: String, required: true},
+    date: {type: Date, default: Date.now()},
+    location: {type: String, required: true},
+    category: {type: String, required: true}
 });
 
 
-export default mongoose.model<ICategoriaModel>('categoria',SystemUser);
+export default mongoose.model<IIncidentReportModel>('incidentsReport',IncidentReportModel);
