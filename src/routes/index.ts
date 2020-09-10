@@ -1,5 +1,7 @@
 import express from 'express';
 import AuthRouter from './AuthRouter';
+import UserRouter from './UserRouter';
+import * as jwtConfig from './../config/middlewares/jwt';
 
 export function init(app: express.Application): void {
 
@@ -11,7 +13,7 @@ export function init(app: express.Application): void {
      *  Also, check if user authenticated
      * @constructs
      */
-    // app.use('/v1/users', jwtConfig.isAuthenticated, UserRouter);
+    app.use('/v1/users', jwtConfig.isAuthenticated, UserRouter);
 
  
     

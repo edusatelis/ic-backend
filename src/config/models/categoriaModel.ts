@@ -7,7 +7,7 @@ import mongoose, { Document, Schema } from 'mongoose';
  * @extends {Document}
  */
 export interface IIncidentReportModel extends Document {
-    path: string;
+    imagePath: string;
     date: Date;
     location: string;
     category: string;
@@ -15,7 +15,7 @@ export interface IIncidentReportModel extends Document {
 }
 
 const IncidentReportModel:Schema = new Schema({
-    path: {type: String, required: true},
+    imagePath: {type: String, required: true},
     date: {type: Date, default: Date.now()},
     location: {type: String, required: true},
     category: {type: String, required: true}

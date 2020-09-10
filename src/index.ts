@@ -12,16 +12,11 @@ const PORT = process.env.PORT || 3050;
 const app: express.Application = express();
 
 Middleware.configure(app);
-Routes.init(app);
 
+Routes.init(app);
 app.get('/', (req: express.Request, res: express.Response) =>{
     res.status(200).send("API v0.1");
-})
-
-// connection.db.on('connected', () => {
-//     console.log('\x1b[32m', 'MongoDB :: connected');
-// });
-
+});
 
 app.listen(PORT, ()=>{
     console.log(`The Server is running in port: ${PORT}`);
