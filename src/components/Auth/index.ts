@@ -1,12 +1,7 @@
 import * as jwt from 'jsonwebtoken';
-import express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import AuthService from './service';
-const app: express.Application = express();
-// import * as httpStatus from 'http-status';
-// import HttpError from './../../config/error/sendError';
 import { IUserModel } from '../User/model';
-// import { emailValidation } from '../Email';
 
 
 
@@ -41,7 +36,7 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
  * e o 'status' caso seja bem sucedida.
  * @param {NextFunction} next
  * @description A função realiza a validação dos campos(email e senha) preenchidos pelo usuario. 
- * Em seguida, gera um token valido por 4 (quatro) horas.
+ * Em seguida, gera um token valido por 1 (uma) hora.
  * @returns {Promise < void >} Retorna ao o usuário a mensagem "Login realizado com sucesso"
  * e o 'status', permitindo o acesso do usuário ao sistema.
  */
