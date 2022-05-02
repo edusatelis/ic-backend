@@ -14,7 +14,7 @@ export async function create(req: Request, res: Response, next: NextFunction): P
         const newIncident: IIncidentReportModel = await UserService.createIncident(req.body);
         if(newIncident)
             res.status(200).json("Incidente cadastrado com sucesso!");
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json(error.message);
     }
 }
@@ -32,7 +32,7 @@ export async function findAll(req: Request, res: Response, next: NextFunction): 
         const incidents: IIncidentReportModel[] = await UserService.findAllIncidents();
 
         res.status(200).json(incidents);
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json(error.message);
     }
 }
@@ -51,7 +51,7 @@ export async function findOne(req: Request, res: Response): Promise<void>{
         const incident: IIncidentReportModel = await UserService.findIncident(req.params.id);
         if(incident)
             res.status(200).json(incident)
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json(error.message);
     }
 }
@@ -69,7 +69,7 @@ export async function findCategory(req: Request, res: Response): Promise<void>{
         const incident: IIncidentReportModel[] = await UserService.findCategory(req.body);
         if(incident)
             res.status(200).json(incident)
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json(error.message);
     }
 }
@@ -88,7 +88,7 @@ export async function deleteOne(req: Request, res: Response): Promise<void>{
         const remove: any = await UserService.deleteIncident(req.params.id);
         if(remove)
             res.status(200).json(remove)
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json(error.message);
     }
 }

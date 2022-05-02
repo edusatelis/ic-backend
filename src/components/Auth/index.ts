@@ -23,7 +23,7 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
         if(user)
             res.status(200).json('Cadatrado com Sucesso!');
 
-    } catch (error) { // Retorno caso falhe a função.
+    } catch (error: any) { // Retorno caso falhe a função.
 
         res.status(400).json(error.message);
     }
@@ -56,7 +56,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
              res.status(200).json({ logged: true, message: 'Login realizado com sucesso',  token});
 
 
-    } catch (error) { // Retorno caso falhe a função.
+    } catch (error: any) { // Retorno caso falhe a função.
 
         res.status(400).json(error.message);
 

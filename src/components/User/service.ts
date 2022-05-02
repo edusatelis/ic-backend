@@ -8,7 +8,7 @@ const UserService: IUserService = {
     async findAllIncidents(): Promise<IIncidentReportModel[]> {
         try {
             return await IncidentReportModel.find({});
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error);
         }
     },
@@ -29,7 +29,7 @@ const UserService: IUserService = {
             const saved: IIncidentReportModel = await incident.save();
 
             return saved;
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -41,7 +41,7 @@ const UserService: IUserService = {
                 return incident;
             else
                 throw new Error("Incident não encontrado");
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -52,7 +52,7 @@ const UserService: IUserService = {
                 return incident;
             else
                 throw new Error("Categoria não encontrada");
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -63,7 +63,7 @@ const UserService: IUserService = {
                 return incident;
             else
                 throw new Error("Incident não encontrado");
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     }

@@ -53,7 +53,7 @@ const AuthService: IAuthService = {
 
             return saved;
 
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error); // Cria uma mensagem de erro
         }
     },
@@ -79,7 +79,7 @@ const AuthService: IAuthService = {
 
             // Caso a senha esteja errada
             throw new Error('Senha inválida');
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error);
         }
     }

@@ -52,7 +52,7 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
     try {        
         const match: boolean = await bcryptjs.compare(candidatePassword, this.password);
         return match;
-    } catch (error) {
+    } catch (error: any) {
         return error;
     }
 };
